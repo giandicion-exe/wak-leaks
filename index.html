@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaK Leaks Official</title>
+    <link rel="icon" type="image/png"
+        href="https://cdn.discordapp.com/attachments/1390192097155481643/1538098059114717264/image.png?ex=6a8170f1&is=6a801f71&hm=d114e3ddebf856d3b70882ca601db2daa8ea42db9d747cfb33741354b45cbef6&">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --red: #d63333;
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.3);
+            --bg: #0a0a0c;
+            --card: rgba(13, 13, 18, 0.7);
+            --card-hover: rgba(22, 22, 30, 0.85);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f0ece4;
+            --muted: #626270;
+
+            --status-online: #00ff66;
+            --status-idle: #f59e0b;
+            --status-dnd: #ff3366;
+            --status-offline: #4b5563;
+
+            --cat-wak: #ff0055;
+            --cat-admin: #ff9900;
+            --cat-lifetime: #00f0ff;
+            --cat-cutemod: #ff77bc;
+            --cat-leakers: #a855f7;
+            --cat-baddies: #ff3399;
+            --cat-booster: #f43f5e;
+            --cat-wakleaks: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Mono', monospace;
+        }
+
+        html,
+        body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+            scroll-behavior: smooth;
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gif-background {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://i.pinimg.com/originals/80/cc/fa/80ccfa7c68731cf0798d6a3e7ed0d856.gif');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .gif-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 12, 0.82);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+
+        #enter-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow: hidden;
+        }
+
+        .enter-bg-gif {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://i.pinimg.com/originals/de/e7/85/dee7851208617e0febcb569fd10ded72.gif');
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px) brightness(0.4);
+            transform: scale(1.05);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #enter-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .enter-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            background: rgba(13, 13, 18, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            padding: 40px 60px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .enter-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            object-fit: cover;
+            animation: pulse-logo 2s infinite ease-in-out;
+        }
+
+        .enter-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            letter-spacing: 0.15em;
+            color: var(--text);
+        }
+
+        .enter-prompt {
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.05);
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            animation: pulse-prompt 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-logo {
+            0%, 100% { transform: scale(1); border-color: rgba(0, 240, 255, 0.2); }
+            50% { transform: scale(1.03); border-color: rgba(0, 240, 255, 0.8); }
+        }
+
+        @keyframes pulse-prompt {
+            0%, 100% { opacity: 0.4; border-color: rgba(0, 240, 255, 0.2); background: rgba(0, 240, 255, 0.02); }
+            50% { opacity: 1; border-color: rgba(0, 240, 255, 0.9); background: rgba(0, 240, 255, 0.12); }
+        }
+
+
+        .hero-wrapper {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .hero-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .hero-header .brand {
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .hero-header .credits {
+            color: #4a4a55;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(8rem, 22vw, 25rem);
+            color: rgba(255, 255, 255, 0.015);
+            white-space: nowrap;
+            z-index: 0;
+            pointer-events: none;
+            letter-spacing: 5px;
+        }
+
+        .dev-badge {
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 4px 12px;
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            margin-bottom: 24px;
+            z-index: 2;
+        }
+
+        .title-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 0.82;
+            z-index: 2;
+        }
+
+        .title-line {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 11vw, 11rem);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .title-white {
+            color: #f0ece4;
+        }
+
+        .title-red {
+            color: var(--red);
+            transform: skewX(-8deg);
+            padding-right: 1vw;
+        }
+
+        .scroll-prompt {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.65rem;
+            color: #4a4a55;
+            letter-spacing: 0.2em;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .gateway-section {
+            position: relative;
+            z-index: 2;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 20px 140px;
+            min-height: 100vh;
+        }
+
+        .system-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .status-pill {
+            font-size: .65rem;
+            letter-spacing: .2em;
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.05);
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            animation: pulse-prompt 2s infinite ease-in-out;
+        }
+
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .search-input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            width: 100%;
+            max-width: 300px;
+            outline: none;
+            transition: border-color .3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--cyan);
+            animation: pulse-prompt 1.5s infinite ease-in-out;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all .3s ease;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            color: var(--cyan);
+            border-color: var(--cyan);
+            background: rgba(0, 240, 255, 0.08);
+            animation: pulse-prompt 2s infinite ease-in-out;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-count {
+            font-size: 0.7rem;
+            font-family: 'Space Mono', monospace;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .cat-wak .category-title { color: var(--cat-wak); }
+        .cat-admin .category-title { color: var(--cat-admin); }
+        .cat-lifetime .category-title { color: var(--cat-lifetime); }
+        .cat-cutemod .category-title { color: var(--cat-cutemod); }
+        .cat-leakers .category-title { color: var(--cat-leakers); }
+        .cat-baddies .category-title { color: var(--cat-baddies); }
+        .cat-booster .category-title { color: var(--cat-booster); }
+        .cat-wakleaks .category-title { color: var(--cat-wakleaks); }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .member-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform .25s ease, border-color .25s ease, background .25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--card-color, var(--border));
+        }
+
+        .member-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--card-hover);
+        }
+
+        .member-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            border: 2px solid #060608;
+        }
+
+        .status-dot.status-online {
+            background: var(--status-online);
+            animation: pulse-prompt 2s infinite ease-in-out;
+        }
+
+        .status-dot.status-idle { background: var(--status-idle); }
+        .status-dot.status-dnd { background: var(--status-dnd); }
+        .status-dot.status-offline { background: var(--status-offline); }
+
+        .member-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .member-name {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .member-handle {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .member-activity {
+            font-size: 0.62rem;
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .member-connections {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .connection-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .connection-badge:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.08);
+        }
+
+        .connection-badge svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        #music-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            width: min(540px, 94vw);
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #music-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--red);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .music-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .music-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: .08em;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-sub {
+            font-size: .6rem;
+            letter-spacing: .15em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s ease;
+        }
+
+        .play-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        @media (max-width: 600px) {
+            .controls-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                max-width: 100%;
+            }
+
+            .hero-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Global Background GIF Layer -->
+    <div class="gif-background"></div>
+    <div class="gif-overlay"></div>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- TAP ANYWHERE TO ENTER OVERLAY (WITH INTRO GIF BACKGROUND) -->
+    <div id="enter-overlay" onclick="enterSite()">
+        <div class="enter-bg-gif"></div>
+        <div class="enter-content">
+            <img src="https://cdn.discordapp.com/attachments/1390192097155481643/1538098059114717264/image.png?ex=6a8170f1&is=6a801f71&hm=d114e3ddebf856d3b70882ca601db2daa8ea42db9d747cfb33741354b45cbef6&" class="enter-logo" alt="Logo">
+            <div class="enter-title">WAK LEAKS OFFICIAL</div>
+            <div class="enter-prompt">- Tap Anywhere to Enter -</div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN HERO SECTION -->
+    <div class="hero-wrapper">
+        <header class="hero-header">
+            <div class="brand">discord.gg/wakleaks</div>
+            <div class="credits">CODED BY DOS</div>
+        </header>
+
+        <div class="hero-content">
+            <div class="watermark">WAK LEAKS</div>
+            <div class="dev-badge">CODED BY DOSWAK</div>
+            <div class="title-stack">
+                <div class="title-line title-white">WAK</div>
+                <div class="title-line title-red">LEAKS</div>
+                <div class="title-line title-white">OFFICIAL</div>
+            </div>
+        </div>
+
+        <div class="scroll-prompt">
+            <span>SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </div>
+
+    <!-- TERMINAL GATEWAY SECTION -->
+    <div class="gateway-section" id="gateway-content">
+        <div class="system-status">
+            <span style="font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em;">.GG/WAKLEAKS</span>
+            <div class="status-pill" id="conn-status">INITIALIZING...</div>
+        </div>
+
+        <div class="controls-bar">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search members"
+                oninput="renderAllSections()">
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="setFilter('all', this)">ALL</button>
+                <button class="filter-btn" onclick="setFilter('wak', this)">wak</button>
+                <button class="filter-btn" onclick="setFilter('admin', this)">admin</button>
+                <button class="filter-btn" onclick="setFilter('lifetime', this)">lifetime</button>
+                <button class="filter-btn" onclick="setFilter('cutemod', this)">cutemod</button>
+                <button class="filter-btn" onclick="setFilter('leakers', this)">leakers</button>
+                <button class="filter-btn" onclick="setFilter('baddies', this)">wak baddies</button>
+                <button class="filter-btn" onclick="setFilter('booster', this)">server booster</button>
+                <button class="filter-btn" onclick="setFilter('wakleaks', this)">.gg/wakleaks</button>
+            </div>
+        </div>
+
+        <div id="hierarchyContainer">
+            <div class="empty-state">Connecting to Discord Server...</div>
+        </div>
+    </div>
+
+    <!-- AUDIO NODE -->
+    <div id="music-bar">
+        <div class="music-info">
+            <div class="music-title">ORIGIMAL</div>
+            <div class="music-sub">By: Original artist</div>
+        </div>
+        <button class="play-btn" id="playBtn" onclick="togglePlay()" title="Toggle Audio">
+            <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+        </button>
+    </div>
+
+    <audio id="bgAudio" src="origimal.mp3" loop></audio>
+
+    <script>
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', event => {
+            if (
+                event.keyCode === 123 || // F12
+                (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 74 || event.keyCode === 67)) || // Ctrl+Shift+I/J/C
+                (event.ctrlKey && (event.keyCode === 85 || event.keyCode === 83 || event.keyCode === 80)) // Ctrl+U, Ctrl+S, Ctrl+P
+            ) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        function enterSite() {
+            const overlay = document.getElementById('enter-overlay');
+            overlay.classList.add('fade-out');
+
+            // Start playing audio automatically upon user interaction
+            const audio = document.getElementById("bgAudio");
+            const playBtn = document.getElementById("playBtn");
+            audio.play().then(() => {
+                isPlaying = true;
+                playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+            }).catch(() => {});
+
+
+            setTimeout(() => {
+                document.getElementById('gateway-content').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+
+        let BOT_TOKEN = "";
+
+        const CATEGORIES = [
+            { id: "wak", name: "WAK", color: "var(--cat-wak)", class: "cat-wak" },
+            { id: "admin", name: "ADMIN", color: "var(--cat-admin)", class: "cat-admin" },
+            { id: "lifetime", name: "LIFETIME", color: "var(--cat-lifetime)", class: "cat-lifetime" },
+            { id: "cutemod", name: "CUTE MOD", color: "var(--cat-cutemod)", class: "cat-cutemod" },
+            { id: "leakers", name: "LEAKERS", color: "var(--cat-leakers)", class: "cat-leakers" },
+            { id: "baddies", name: "WAK BADDIES", color: "var(--cat-baddies)", class: "cat-baddies" },
+            { id: "booster", name: "SERVER BOOSTER", color: "var(--cat-booster)", class: "cat-booster" },
+            { id: "wakleaks", name: ".GG/WAKLEAKS", color: "var(--cat-wakleaks)", class: "cat-wakleaks" }
+        ];
+
+        const USER_CONNECTIONS = {};
+
+        const ICONS = {
+            github: `<svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`,
+            steam: `<svg viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.03 4.524 4.524s-2.03 4.524-4.524 4.524h-.105l-4.076 2.911c.002.052.006.105.006.158 0 1.807-1.465 3.272-3.272 3.272-1.62 0-2.969-1.176-3.226-2.723L.283 15.659C1.82 20.485 6.49 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>`,
+            discord: `<svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`,
+            ig: `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
+            tiktok: `<svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.82.56-1.31 1.53-1.33 2.52-.04 1.25.68 2.45 1.79 2.97 1.2.57 2.67.41 3.73-.39.81-.62 1.28-1.62 1.31-2.63.03-4.28.01-8.57.02-12.85z"/></svg>`
+        };
+
+        let ws = null;
+        let heartbeatInterval = null;
+        let sequenceNumber = null;
+        let membersStore = new Map();
+        let roleMap = new Map();
+        let currentFilter = 'all';
+
+        // Fetch configuration file dynamically
+        async function loadConfig() {
+            try {
+                const response = await fetch('config.json');
+                const config = await response.json();
+                BOT_TOKEN = config.token;
+
+                if (!BOT_TOKEN || BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") {
+                    document.getElementById('hierarchyContainer').innerHTML = '<div class="empty-state" style="color:var(--status-dnd);">ERROR: Replace token value in config.json with your actual Bot Token.</div>';
+                } else {
+                    initDiscordGateway();
+                }
+            } catch (error) {
+                document.getElementById('hierarchyContainer').innerHTML = '<div class="empty-state" style="color:var(--status-dnd);">ERROR: Failed to load config.json file.</div>';
+            }
+        }
+
+        function initDiscordGateway() {
+            ws = new WebSocket("wss://gateway.discord.gg/?v=10&encoding=json");
+
+            ws.onopen = () => {
+                updateStatus("CONNECTING", "var(--cyan)");
+            };
+
+            ws.onmessage = (event) => {
+                const payload = JSON.parse(event.data);
+                const { op, d, t, s } = payload;
+                if (s) sequenceNumber = s;
+
+                switch (op) {
+                    case 10:
+                        startHeartbeat(d.heartbeat_interval);
+                        sendIdentify();
+                        break;
+                    case 0:
+                        handleDispatchEvent(t, d);
+                        break;
+                    case 11:
+                        break;
+                }
+            };
+
+            ws.onclose = () => {
+                updateStatus("DISCONNECTED", "var(--status-dnd)");
+                clearInterval(heartbeatInterval);
+            };
+        }
+
+        function updateStatus(text, color) {
+            const el = document.getElementById('conn-status');
+            if (el) {
+                el.innerText = text;
+                el.style.borderColor = color;
+                el.style.color = color;
+            }
+        }
+
+        function startHeartbeat(interval) {
+            heartbeatInterval = setInterval(() => {
+                ws.send(JSON.stringify({ op: 1, d: sequenceNumber }));
+            }, interval);
+        }
+
+        function sendIdentify() {
+            ws.send(JSON.stringify({
+                op: 2,
+                d: {
+                    token: BOT_TOKEN,
+                    intents: 259,
+                    properties: { os: "browser", browser: "chrome", device: "chrome" }
+                }
+            }));
+        }
+
+        function handleDispatchEvent(eventType, data) {
+            if (eventType === "READY") {
+                updateStatus("ONLINE", "var(--status-online)");
+            }
+            else if (eventType === "GUILD_CREATE") {
+                data.roles.forEach(role => {
+                    const cleanName = role.name.toLowerCase().trim();
+                    CATEGORIES.forEach(cat => {
+                        if (cleanName.includes(cat.id) || cleanName.includes(cat.name.toLowerCase())) {
+                            roleMap.set(role.id, cat.id);
+                        }
+                    });
+                });
+
+                const presencesMap = new Map();
+                (data.presences || []).forEach(p => presencesMap.set(p.user.id, p));
+
+                data.members.forEach(m => {
+                    if (m.user.bot) return;
+
+                    let assignedCat = "wakleaks";
+                    for (let cat of CATEGORIES) {
+                        const hasRole = m.roles.some(rId => roleMap.get(rId) === cat.id);
+                        if (hasRole) {
+                            assignedCat = cat.id;
+                            break;
+                        }
+                    }
+
+                    const presence = presencesMap.get(m.user.id) || {};
+                    storeMember(m, presence, assignedCat);
+                });
+
+                renderAllSections();
+            }
+            else if (eventType === "PRESENCE_UPDATE") {
+                if (membersStore.has(data.user.id)) {
+                    let memberObj = membersStore.get(data.user.id);
+                    memberObj.status = data.status || 'offline';
+                    memberObj.activity = formatActivities(data.activities);
+                    membersStore.set(data.user.id, memberObj);
+                    renderAllSections();
+                }
+            }
+        }
+
+        function storeMember(m, presence, categoryId) {
+            const avatarUrl = m.user.avatar
+                ? `https://cdn.discordapp.com/avatars/${m.user.id}/${m.user.avatar}.png`
+                : `https://cdn.discordapp.com/embed/avatars/${parseInt(m.user.discriminator || 0) % 5}.png`;
+
+            const connections = USER_CONNECTIONS[m.user.id] || [];
+
+            membersStore.set(m.user.id, {
+                id: m.user.id,
+                name: m.nick || m.user.global_name || m.user.username,
+                username: m.user.username,
+                avatar: avatarUrl,
+                status: presence.status || 'offline',
+                activity: formatActivities(presence.activities),
+                category: categoryId,
+                connections: connections
+            });
+        }
+
+        function formatActivities(activities) {
+            if (!activities || activities.length === 0) return "No active status";
+            const act = activities[0];
+            if (act.type === 0) return `Playing ${act.name}`;
+            if (act.type === 2) return `Listening to ${act.name}`;
+            if (act.type === 1) return `Streaming ${act.name}`;
+            if (act.type === 4) return `${act.state || act.name}`;
+            return `${act.name}`;
+        }
+
+        function setFilter(categoryId, btn) {
+            currentFilter = categoryId;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAllSections();
+        }
+
+        function renderAllSections() {
+            const container = document.getElementById('hierarchyContainer');
+            if (!container) return;
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const membersList = Array.from(membersStore.values());
+
+            const statusPriority = {
+                'online': 1,
+                'idle': 2,
+                'dnd': 3,
+                'offline': 4
+            };
+
+            let htmlOutput = '';
+
+            const categoriesToRender = currentFilter === 'all'
+                ? CATEGORIES
+                : CATEGORIES.filter(c => c.id === currentFilter);
+
+            categoriesToRender.forEach(cat => {
+                const categoryMembers = membersList.filter(m => {
+                    const matchesCategory = m.category === cat.id;
+                    const matchesSearch = m.name.toLowerCase().includes(searchVal) || m.username.toLowerCase().includes(searchVal);
+                    return matchesCategory && matchesSearch;
+                }).sort((a, b) => {
+                    const pA = statusPriority[a.status] || 5;
+                    const pB = statusPriority[b.status] || 5;
+                    if (pA !== pB) {
+                        return pA - pB;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+
+                htmlOutput += `
+                    <div class="category-section ${cat.class}">
+                        <div class="category-header">
+                            <div class="category-title">${cat.name}</div>
+                            <div class="category-count">${categoryMembers.length}</div>
+                        </div>
+                        <div class="member-grid">
+                            ${categoryMembers.length > 0 ? categoryMembers.map(m => {
+                    const hasConnections = Array.isArray(m.connections) && m.connections.length > 0;
+                    return `
+                                <div class="member-card" style="--card-color: ${cat.color}">
+                                    <div class="member-main">
+                                        <div class="avatar-wrap">
+                                            <img src="${m.avatar}" class="avatar-img" alt="avatar" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                                            <div class="status-dot status-${m.status}"></div>
+                                        </div>
+                                        <div class="member-info">
+                                            <div class="member-name">${escapeHtml(m.name)}</div>
+                                            <div class="member-handle">@${escapeHtml(m.username)}</div>
+                                            <div class="member-activity">${escapeHtml(m.activity)}</div>
+                                        </div>
+                                    </div>
+                                    ${hasConnections ? `
+                                        <div class="member-connections">
+                                            ${m.connections.map(conn => `
+                                                <a href="${conn.url}" target="_blank" rel="noopener noreferrer" class="connection-badge" title="${conn.type.toUpperCase()}: ${escapeHtml(conn.name)}">
+                                                    ${ICONS[conn.type] || ''}
+                                                    <span>${escapeHtml(conn.name)}</span>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                `;
+                }).join('') : '<div class="empty-state">No members found in this category.</div>'}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlOutput;
+        }
+
+        function escapeHtml(str) {
+            return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+        }
+
+        // Initialize application configuration loading
+        loadConfig();
+
+
+        const canvas = document.getElementById("particle-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * -0.5 - 0.2;
+                this.opacity = Math.random() * 0.4 + 0.1;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 35; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        const audio = document.getElementById("bgAudio");
+        const playBtn = document.getElementById("playBtn");
+        let isPlaying = false;
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                isPlaying = false;
+            } else {
+                audio.play().catch(() => { });
+                playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+                isPlaying = true;
+            }
+        }
+    </script>
+</body>
+
+</html>
